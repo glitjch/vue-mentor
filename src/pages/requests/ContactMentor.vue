@@ -1,3 +1,3 @@
 <template>
-  <section>Contact Mentor</section>
+  <section>Contact Mentorr</section>
 </template>
