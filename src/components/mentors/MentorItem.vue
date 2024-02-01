@@ -1,20 +1,27 @@
 <template>
 	<li>
 		<h3>{{ fullName }}</h3>
-		<h4>${{ hourlyRate }}/hour</h4>
+		<h4>${{ rate }}/hour</h4>
 		<div>
-			<span v-for="area of areas" :key="area">{{ area }}</span>
+			<base-badge
+				v-for="area in areas"
+				:key="area"
+				:type="area"
+				:title="area"
+			></base-badge>
 		</div>
 		<div class="actions">
-			<router-link :to=mentorContactLink>Contact</router-link>
-			<router-link :to=mentorDetailLink>View Details</router-link>
+			<base-button mode="outline" link :to="mentorContactLink"
+				>Contact</base-button
+			>
+			<base-button link :to="mentorDetailsLink">View Details</base-button>
 		</div>
 	</li>
 </template>
 
 <script>
 export default {
-	props: ['id', 'firstName', 'lastName', 'areas', 'description', 'hourlyRate'],
+	props: ['id', 'firstName', 'lastName', 'areas', 'description', 'rate'],
 	computed: {
 		fullName() {
 			return `${this.firstName} ${this.lastName}`;
@@ -22,14 +29,14 @@ export default {
 		mentorContactLink() {
 			return `${this.$route.path}/${this.id}/contact`;
 		},
-		mentorDetailLink() {
+		mentorDetailsLink() {
 			return `${this.$route.path}/${this.id}`;
 		},
 	},
 };
 </script>
 
-<style>
+<style scoped>
 li {
 	margin: 1rem 0;
 	border: 1px solid #424242;

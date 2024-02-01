@@ -1,26 +1,26 @@
 <template>
 	<section>Filter</section>
 	<section>
-		<div>
-			<button>Refresh</button>
-			<router-link to="/register">Register as a Mentor</router-link>
-		</div>
-		<ul v-if="hasMentors">
-			<mentor-item
-				v-for="mentor in filteredMentors"
-				:key="mentor.id"
-				:id="mentor.id"
-				:firstName="mentor.firstName"
-				:lastName="mentor.lastName"
-				:areas="mentor.areas"
-				:description="mentor.description"
-				:hourlyRate="mentor.hourlyRate"
-			>
-				{{ mentor.firstName }}
-        <router-link :to="{ name: 'mentor', params: { id: mentor.id }}"> </router-link>
-			</mentor-item>
-		</ul>
-		<h3 v-else>No mentors found</h3>
+		<base-card>
+			<div class="controls">
+				<base-button mode="outline">Refresh</base-button>
+				<base-button link to="/register">Register as a Mentor</base-button>
+			</div>
+			<ul v-if="hasMentors">
+				<mentor-item
+					v-for="mentor in filteredMentors"
+					:key="mentor.id"
+					:id="mentor.id"
+					:first-name="mentor.firstName"
+					:last-name="mentor.lastName"
+					:areas="mentor.areas"
+					:description="mentor.description"
+					:rate="mentor.hourlyRate"
+				>
+				</mentor-item>
+			</ul>
+			<h3 v-else>No mentors found</h3>
+		</base-card>
 	</section>
 </template>
 
@@ -44,13 +44,13 @@ export default {
 
 <style scoped>
 ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }
 
 .controls {
-  display: flex;
-  justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 </style>
