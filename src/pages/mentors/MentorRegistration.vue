@@ -14,6 +14,7 @@ export default {
   methods: {
     saveData(payload) {
       this.$store.dispatch('mentors/registerMentor', payload);
+      this.$router.replace('/mentors')
     }
   }
 };
