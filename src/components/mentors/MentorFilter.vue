@@ -18,26 +18,26 @@
 
 <script>
 export default {
-  emits: ['change-filter'],
+	emits: ['change-filter'],
 	data() {
 		return {
 			filter: {
-				frontend: true, 
+				frontend: true,
 				backend: true,
 				career: true,
 			},
 		};
 	},
 	methods: {
-    setFilter(event) {
+		setFilter(event) {
 			const inputId = event.target.id;
 			const isActive = event.target.checked;
-      const updatedFilter = {
-        ...this.filter,
+			const updatedFilter = {
+				...this.filter,
 				[inputId]: isActive,
-      };
-      this.filter = updatedFilter;
-      this.$emit('change-filter', updatedFilter)
+			};
+			this.filter = updatedFilter;
+			this.$emit('change-filter', updatedFilter);
 		},
 	},
 };
