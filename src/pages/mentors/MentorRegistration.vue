@@ -1,7 +1,7 @@
 <template>
 	<base-card>
 		<h2>Register as a Mentor</h2>
-		<mentor-form></mentor-form>
+		<mentor-form @save-data="saveData"></mentor-form>
 	</base-card>
 </template>
 
@@ -10,7 +10,12 @@ import MentorForm from '../../components/mentors/MentorForm.vue';
 export default {
 	components: {
 		MentorForm,
-	},
+  },
+  methods: {
+    saveData(payload) {
+      this.$store.dispatch('mentors/registerMentor', payload);
+    }
+  }
 };
 
 // Add actions

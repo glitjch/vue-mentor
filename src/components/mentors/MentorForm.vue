@@ -40,6 +40,7 @@
 
 <script>
 export default {
+  emits: ['saveData'],
 	data() {
 		return {
 			firstName: '',
@@ -50,7 +51,7 @@ export default {
 		};
 	},
 	methods: {
-		submitForm() {
+    submitForm() {
 			const formData = {
 				first: this.firstName,
 				last: this.lastName,
@@ -59,7 +60,7 @@ export default {
 				areas: this.areas,
 			};
 
-			console.log(formData);
+			this.$emit('saveData', formData);
 		},
 	},
 };
