@@ -1,7 +1,7 @@
 const mentorsActions = {
 	registerMentor(context, payload) {
 		const mentor = {
-      id: 'm3',
+      id: context.rootGetters.userId,
 			firstName: payload.first,
 			lastName: payload.last,
 			areas: payload.areas,

@@ -4,7 +4,12 @@ const mentorsGetters = {
   },
   hasMentors(state) {
     return state.mentors && state.mentors.length > 0;
-  }
+  },
+  isMentor(_state, getters, _rootState, rootGetters) {
+    const mentors = getters.mentors;
+    const userId = rootGetters.userId;
+    return mentors.some((mentor) => mentor.id === userId);
+  },
 }
 
 export default mentorsGetters;
