@@ -1,5 +1,5 @@
 <template>
-	<form @submit.prevent="submitMessage">
+	<form @submit.prevent="submitRequest">
 		<div class="form-control" :class="{ errors: !email.isValid }">
 			<label for="email">Your Email</label>
 			<input
@@ -57,7 +57,7 @@ export default {
 				this.formIsValid = false;
 			}
 		},
-		async submitMessage() {
+		async submitRequest() {
 			await this.validateMessage();
 			if (!this.formIsValid) return;
 
@@ -68,7 +68,7 @@ export default {
 				message: this.message,
 				date: Date.now(),
 			};
-			console.log('contact form');
+
 			this.$store.dispatch('requests/saveRequest', messageData);
 			this.$route.replace('/requests');
 			return;
