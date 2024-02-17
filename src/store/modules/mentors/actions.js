@@ -1,5 +1,5 @@
 const mentorsActions = {
-	registerMentor(context, payload) {
+  registerMentor(context, payload) {    
 		const mentor = {
       id: context.rootGetters.userId,
 			firstName: payload.first,

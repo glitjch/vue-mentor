@@ -28,6 +28,7 @@
 
 <script>
 export default {
+	props: ['id'],
 	data() {
 		return {
 			email: {
@@ -60,12 +61,16 @@ export default {
 			await this.validateMessage();
 			if (!this.formIsValid) return;
 
+			const mentorId = this.$route.params.id;
 			const messageData = {
+				mentorId: mentorId,
 				email: this.email,
 				message: this.message,
 				date: Date.now(),
 			};
-			this.$emit('message-data', messageData);
+			console.log('contact form');
+			this.$store.dispatch('requests/saveRequest', messageData);
+			this.$route.replace('/requests');
 			return;
 		},
 	},
