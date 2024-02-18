@@ -7,12 +7,14 @@
 				<request-item
 					v-for="request in requests"
 					:key="request.id"
+          :date="request.date"
+          :email="request.userEmail"
+          :message="request.message"
 				></request-item>
 			</ul>
 			<p v-else>You don't have any received requests. Loner!</p>
 		</base-card>
 	</section>
-	<p>{{ this.requests }}</p>
 </template>
 
 <script>
@@ -21,7 +23,6 @@ export default {
 	components: {
 		RequestItem,
   },
-  // TODO need props to pass down to request item
 	computed: {
 		requests() {
 			return this.$store.getters['requests/requests'];

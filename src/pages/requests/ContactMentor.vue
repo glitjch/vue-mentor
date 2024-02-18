@@ -64,13 +64,13 @@ export default {
 			const mentorId = this.$route.params.id;
 			const messageData = {
 				mentorId: mentorId,
-				email: this.email,
-				message: this.message,
-				date: Date.now(),
+				email: this.email.val,
+				message: this.message.val,
+				date: new Date().toUTCString(),
 			};
 
 			this.$store.dispatch('requests/saveRequest', messageData);
-			this.$route.replace('/requests');
+			this.$router.replace('/requests');
 			return;
 		},
 	},
