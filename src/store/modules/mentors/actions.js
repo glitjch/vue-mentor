@@ -1,14 +1,36 @@
 const mentorsActions = {
-  registerMentor(context, payload) {    
+	async registerMentor(context, payload) {
+		const userId = context.rootGetters.userId;
 		const mentor = {
-      id: context.rootGetters.userId,
 			firstName: payload.first,
 			lastName: payload.last,
 			areas: payload.areas,
 			description: payload.desc,
 			hourlyRate: payload.rate,
 		};
-		context.commit('registerMentor', mentor);
+
+		const response = await fetch(
+			`https://vue-http-demo-40cf5-default-rtdb.firebaseio.com/${userId}.json`,
+			{
+				method: 'PUT',
+				body: JSON.stringify({
+					...mentor,
+					id: userId,
+				}),
+			}
+		);
+
+		if (!response.ok) {
+			console.log('uh oh', response);
+			return;
+		}
+
+		// const responseData = await response.json();
+
+		context.commit('registerMentor', {
+			...mentor,
+			id: userId,
+		});
 	},
 };
 
