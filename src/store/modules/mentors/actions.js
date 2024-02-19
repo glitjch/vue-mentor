@@ -10,7 +10,7 @@ const mentorsActions = {
 		};
 
 		const response = await fetch(
-			`https://vue-http-demo-40cf5-default-rtdb.firebaseio.com/${userId}.json`,
+			`https://vue-http-demo-40cf5-default-rtdb.firebaseio.com/mentors/${userId}.json`,
 			{
 				method: 'PUT',
 				body: JSON.stringify({
@@ -31,6 +31,35 @@ const mentorsActions = {
 			...mentor,
 			id: userId,
 		});
+	},
+  async loadMentors(context) {
+    console.log('loadaction')
+    
+		const response = await fetch(
+			`https://vue-http-demo-40cf5-default-rtdb.firebaseio.com/mentors.json`
+		);
+
+		const responseData = await response.json();
+		// if (!responseData.ok) return;
+
+		const mentors = [];
+		for (const key in responseData) {
+			const { firstName, lastName, description, areas, hourlyRate, id } =
+				responseData[key];
+			const mentor = {
+				id,
+				firstName,
+				lastName,
+				description,
+				areas,
+				hourlyRate,
+			};
+			mentors.push(mentor);
+		}
+
+    context.commit('setMentors', mentors);
+
+		return;
 	},
 };
 
