@@ -11,7 +11,8 @@
 					>Register as a Mentor</base-button
 				>
 			</div>
-			<ul v-if="hasMentors">
+			<base-spinner v-if="isLoading"></base-spinner>
+			<ul v-else-if="hasMentors">
 				<mentor-item
 					v-for="mentor in filteredMentors"
 					:key="mentor.id"
@@ -32,14 +33,17 @@
 <script>
 import MentorItem from '../../components/mentors/MentorItem.vue';
 import MentorFilter from '../../components/mentors/MentorFilter.vue';
+import BaseSpinner from '../../components/ui/BaseSpinner.vue';
 
 export default {
 	components: {
 		MentorItem,
 		MentorFilter,
+		BaseSpinner,
 	},
 	data() {
 		return {
+			isLoading: false,
 			activeFilters: {
 				frontend: true,
 				backend: true,
@@ -67,16 +71,17 @@ export default {
 			return this.$store.getters['mentors/hasMentors'];
 		},
 	},
-  async created() {
-    this.loadMentors();
-    
+	async created() {
+		this.loadMentors();
 	},
 	methods: {
 		setFilters(updatedFilter) {
 			return (this.activeFilters = updatedFilter);
 		},
-    loadMentors() {
-			this.$store.dispatch('mentors/loadMentors');
+		async loadMentors() {
+			this.isLoading = true;
+			await this.$store.dispatch('mentors/loadMentors');
+			setTimeout(() => (this.isLoading = false), 1000);
 		},
 	},
 };
