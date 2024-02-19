@@ -5,7 +5,7 @@
 			<h3>Requests received</h3>
 			<ul v-if="!hasRequests">
 				<request-item
-					v-for="request in requests"
+					v-for="request in currentUserRequests"
 					:key="request.id"
           :date="request.date"
           :email="request.userEmail"
@@ -24,8 +24,8 @@ export default {
 		RequestItem,
   },
 	computed: {
-		requests() {
-			return this.$store.getters['requests/requests'];
+		currentUserRequests() {
+			return this.$store.getters['requests/currentUserRequests'];
 		},
 		hasRequests() {
 			return this.$store.getters['requests/hasRequests'];
