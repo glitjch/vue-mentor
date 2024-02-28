@@ -16,7 +16,7 @@
 				rows="5"
 				id="message"
 				v-model.trim="message.val"
-				@blur="clearValidity('message')"
+				@blur="clearValidity('message')"  
 			></textarea>
 			<p v-if="!message.isValid">Message cannot be empty.</p>
 		</div>

@@ -43,7 +43,8 @@ const mentorsActions = {
 		// if (!responseData.ok) return;
 
 		const mentors = [];
-		for (const key in responseData) {
+    for (const key in responseData) {
+      console.log('key', key)
 			const { firstName, lastName, description, areas, hourlyRate, id } =
 				responseData[key];
 			const mentor = {
