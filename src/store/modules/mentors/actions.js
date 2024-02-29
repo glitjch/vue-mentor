@@ -39,11 +39,12 @@ const mentorsActions = {
 			`https://vue-http-demo-40cf5-default-rtdb.firebaseio.com/mentors.json`
 		);
 
-		const responseData = await response.json();
-    if (!responseData.ok) {
-      const error = new Error(responseData.message || 'Failed to fetch mentor list')
+    if (!response.ok) {
+      const error = new Error(response.status || 'Failed to fetch mentor list')
       throw error;
     }
+
+    const responseData = await response.json();
 
 		const mentors = [];
     for (const key in responseData) {

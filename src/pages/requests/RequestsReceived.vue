@@ -1,15 +1,14 @@
-
 <template>
 	<section>
 		<base-card>
 			<h3>Requests received</h3>
 			<ul v-if="!hasRequests">
 				<request-item
-					v-for="request in currentUserRequests"
+					v-for="request in loadRequests"
 					:key="request.id"
-          :date="request.date"
-          :email="request.userEmail"
-          :message="request.message"
+					:date="request.date"
+					:email="request.userEmail"
+					:message="request.message"
 				></request-item>
 			</ul>
 			<p v-else>You don't have any received requests. Loner!</p>
@@ -23,14 +22,22 @@ export default {
 	components: {
 		RequestItem,
   },
+  data() {
+    return {
+      isLoading: false,
+    }
+  },
 	computed: {
-		currentUserRequests() {
-			return this.$store.getters['requests/currentUserRequests'];
-		},
 		hasRequests() {
 			return this.$store.getters['requests/hasRequests'];
 		},
-	},
+  },
+  methods: {
+    loadRequests() {
+      this.isLoading = true;
+			return this.$store.getters['requests/currentUserRequests'];
+		},
+  },
 };
 </script>
 
