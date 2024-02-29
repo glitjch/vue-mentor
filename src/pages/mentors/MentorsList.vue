@@ -1,4 +1,7 @@
 <template>
+  <base-dialog :show="!!error" title="An error occured" @close="handleError">
+{{ error }}
+</base-dialog>
 	<section>
 		<mentor-filter @change-filter="setFilters"></mentor-filter>
 		<div>{{ activeFilters }}</div>
@@ -12,7 +15,7 @@
 				>
 			</div>
 			<base-spinner v-if="isLoading"></base-spinner>
-			<ul v-else-if="hasMentors">
+			<ul v-else-if="loadMentors">
 				<mentor-item
 					v-for="mentor in filteredMentors"
 					:key="mentor.id"
@@ -25,7 +28,7 @@
 				>
 				</mentor-item>
 			</ul>
-			<h3 v-else>No mentors found</h3>
+			<h3 v-else>No mentors found: {error}</h3>
 		</base-card>
 	</section>
 </template>
@@ -34,16 +37,19 @@
 import MentorItem from '../../components/mentors/MentorItem.vue';
 import MentorFilter from '../../components/mentors/MentorFilter.vue';
 import BaseSpinner from '../../components/ui/BaseSpinner.vue';
+import BaseDialog from '../../components/ui/BaseDialog.vue';
 
 export default {
 	components: {
 		MentorItem,
 		MentorFilter,
-		BaseSpinner,
+    BaseSpinner,
+    BaseDialog,
 	},
 	data() {
 		return {
 			isLoading: false,
+      error: null,
 			activeFilters: {
 				frontend: true,
 				backend: true,
@@ -79,10 +85,17 @@ export default {
 			return (this.activeFilters = updatedFilter);
 		},
 		async loadMentors() {
-			this.isLoading = true;
-			await this.$store.dispatch('mentors/loadMentors');
+      this.isLoading = true;
+      try {
+        await this.$store.dispatch('mentors/loadMentors');
+      } catch (error) {
+        this.error = error.message || 'Failed to fetch mentor list!';
+      }
 			setTimeout(() => (this.isLoading = false), 1000);
-		},
+    },
+    handleError() {
+      this.error = null;
+    },
 	},
 };
 </script>

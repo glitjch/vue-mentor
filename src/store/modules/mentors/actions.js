@@ -40,11 +40,13 @@ const mentorsActions = {
 		);
 
 		const responseData = await response.json();
-		// if (!responseData.ok) return;
+    if (!responseData.ok) {
+      const error = new Error(responseData.message || 'Failed to fetch mentor list')
+      throw error;
+    }
 
 		const mentors = [];
     for (const key in responseData) {
-      console.log('key', key)
 			const { firstName, lastName, description, areas, hourlyRate, id } =
 				responseData[key];
 			const mentor = {
