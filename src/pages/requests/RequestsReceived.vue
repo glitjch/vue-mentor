@@ -1,10 +1,11 @@
 <template>
 	<section>
 		<base-card>
-			<h3>Requests received</h3>
-			<ul v-if="!hasRequests">
+			<h3 @click="test">Requests received</h3>
+			<!-- <base-spinner v-if="isLoading"></base-spinner> -->
+			<ul v-if="hasRequests">
 				<request-item
-					v-for="request in loadRequests"
+					v-for="request in filteredRequests"
 					:key="request.id"
 					:date="request.date"
 					:email="request.userEmail"
@@ -18,26 +19,41 @@
 
 <script>
 import RequestItem from '../../components/requests/RequestItem';
+// import BaseSpinner from '../../components/ui/BaseSpinner.vue';
+
 export default {
 	components: {
 		RequestItem,
-  },
-  data() {
-    return {
-      isLoading: false,
-    }
-  },
+		// BaseSpinner,
+	},
+	data() {
+		return {
+			isLoading: false,
+		};
+	},
 	computed: {
 		hasRequests() {
 			return this.$store.getters['requests/hasRequests'];
 		},
-  },
-  methods: {
-    loadRequests() {
-      this.isLoading = true;
+		filteredRequests() {
+			const userId = this.$store.getters['userId'];
+      const requests = this.loadRequests()
+      const request = requests.filter((request) => {
+				return request.mentorId === userId;
+      });
+      return request;
+		},
+	},
+	methods: {
+		loadRequests() {
+			console.log('loadre');
+			this.isLoading = true;
 			return this.$store.getters['requests/currentUserRequests'];
 		},
-  },
+		test() {
+			console.log('test');
+		},
+	},
 };
 </script>
 

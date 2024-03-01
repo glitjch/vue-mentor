@@ -20,6 +20,7 @@ export default {
 	},
 };
 </script>
+
 <style scoped>
 li {
 	margin: 1rem 0;
