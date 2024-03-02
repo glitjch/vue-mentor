@@ -36,24 +36,22 @@ export default {
 			return this.$store.getters['requests/hasRequests'];
 		},
 		filteredRequests() {
-			const userId = this.$store.getters['userId'];
-      const requests = this.loadRequests()
-      const request = requests.filter((request) => {
-				return request.mentorId === userId;
-      });
-      return request;
+      return this.$store.getters['requests/currentUserRequests'];
 		},
 	},
 	methods: {
-		loadRequests() {
-			console.log('loadre');
-			this.isLoading = true;
-			return this.$store.getters['requests/currentUserRequests'];
+		async loadRequests() {
+      this.isLoading = true;
+      console.log('loadreq ferom page')
+      await this.$store.dispatch('requests/loadRequests');
+			setTimeout(() => {
+				this.isLoading = false;
+			}, 1000);
 		},
-		test() {
-			console.log('test');
-		},
-	},
+  },
+  async created() {
+		await this.loadRequests();
+  },
 };
 </script>
 
