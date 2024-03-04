@@ -10,9 +10,9 @@ const requestsActions = {
 		};
 
 		const response = await fetch(
-			`https://vue-http-demo-40cf5-default-rtdb.firebaseio.com/mentors/${payload.mentorId}/requests/${requestId}.json`,
+			`https://vue-http-demo-40cf5-default-rtdb.firebaseio.com/requests/${payload.mentorId}.json`,
 			{
-				method: 'PUT',
+				method: 'POST',
 				body: JSON.stringify({
 					...request,
 				}),
@@ -26,7 +26,7 @@ const requestsActions = {
 	},
   async loadRequests(context) {
       const userId = context.rootGetters['userId'];
-    const response = await fetch(`https://vue-http-demo-40cf5-default-rtdb.firebaseio.com/mentors/${userId}/requests/.json`);
+    const response = await fetch(`https://vue-http-demo-40cf5-default-rtdb.firebaseio.com/requests/${userId}.json`);
 
     if (!response.ok) {
       console.log(response)
