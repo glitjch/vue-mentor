@@ -1,13 +1,13 @@
 const requestsActions = {
 	async saveRequest(context, payload) {
-		const requestId = Math.floor(Math.random() * 100)    ;
+		console.log('save request actions');
+
 		const request = {
-			id: requestId,
-			mentorId: payload.mentorId,
 			userEmail: payload.email,
 			message: payload.message,
 			date: payload.date,
 		};
+		console.log('mentorId', payload.mentorId);
 
 		const response = await fetch(
 			`https://vue-http-demo-40cf5-default-rtdb.firebaseio.com/requests/${payload.mentorId}.json`,
@@ -17,38 +17,48 @@ const requestsActions = {
 					...request,
 				}),
 			}
-    );
-    
-    if (response.ok) {
-      console.log('it is okay')
-    }
+		);
+
+		const responseData = await response.json();
+		if (!response.ok) {
+			const error = new Error(responseData.error || 'failed to send request');
+			throw error;
+		}
+
+    request.id = responseData.name;
+    request.mentorId = payload.mentorId;
+
 		context.commit('saveRequest', request);
 	},
-  async loadRequests(context) {
-      const userId = context.rootGetters['userId'];
-    const response = await fetch(`https://vue-http-demo-40cf5-default-rtdb.firebaseio.com/requests/${userId}.json`);
-
-    if (!response.ok) {
-      console.log(response)
-    }
-
+	async loadRequests(context) {
+		const userId = context.rootGetters.userId;
+		const response = await fetch(
+			`https://vue-http-demo-40cf5-default-rtdb.firebaseio.com/requests/${userId}.json`
+    );
+    
     const responseData = await response.json();
-    const requests = [];
-    for (const requestId in responseData) {
-      const { date, id, mentorId, message, userEmail } = responseData[requestId];
-      const requestDto = {
-        id,
-        date,
-        mentorId,
-        message,
-        userEmail,
-      }
-      requests.push(requestDto)
-    }
+    
+    if (!response.ok) {
+			const error = new Error(responseData.error || 'failed to fetch request');
+			throw error;
+		}
+		const requests = [];
+		for (const key in responseData) {
+			const { date, message, userEmail } =
+				responseData[key];
+			const request = {
+				id: key,
+        mentorId: userId,
+				date,
+				message,
+				userEmail,
+			};
+			requests.push(request);
+		}
 
-    context.commit('importRequest', requests)
-    return requests;
-  },
+		context.commit('importRequest', requests);
+		return requests;
+	},
 };
 
 export default requestsActions;
