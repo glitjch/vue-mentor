@@ -32,22 +32,29 @@ const mentorsActions = {
 			id: userId,
 		});
 	},
-  async loadMentors(context) {
-    console.log('loadaction')
-    
+  async loadMentors(context, payload) {
+		const currentTimeStamp = new Date().getTime();
+		const lastFetch = context.getters.lastFetch;
+		const shouldUpdate = (currentTimeStamp - lastFetch) / 1000 > 60;
+		// console.log('lastFetch', lastFetch)
+		// console.log('shouldUpdate', shouldUpdate)
+		if (!payload.forceRefresh && lastFetch && !shouldUpdate) {
+			return;
+		}
+
 		const response = await fetch(
 			`https://vue-http-demo-40cf5-default-rtdb.firebaseio.com/mentors.json`
 		);
 
-    if (!response.ok) {
-      const error = new Error(response.status || 'Failed to fetch mentor list')
-      throw error;
-    }
+		if (!response.ok) {
+			const error = new Error(response.status || 'Failed to fetch mentor list');
+			throw error;
+		}
 
-    const responseData = await response.json();
+		const responseData = await response.json();
 
 		const mentors = [];
-    for (const key in responseData) {
+		for (const key in responseData) {
 			const { firstName, lastName, description, areas, hourlyRate, id } =
 				responseData[key];
 			const mentor = {
@@ -61,7 +68,9 @@ const mentorsActions = {
 			mentors.push(mentor);
 		}
 
-    context.commit('setMentors', mentors);
+		context.commit('setMentors', mentors);
+
+		context.commit('setFetchTimeStamp');
 
 		return;
 	},

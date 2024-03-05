@@ -5,7 +5,8 @@ import getters from './getters.js';
 const mentorsModule = {
   namespaced: true,
 	state() {
-		return {
+    return {
+      lastFetch: null,
 			mentors: [
 				{
 					id: 'm1',

@@ -1,7 +1,7 @@
 <template>
-  <base-dialog :show="!!error" title="An error occured" @close="handleError">
-{{ error }}
-</base-dialog>
+	<base-dialog :show="!!error" title="An error occured" @close="handleError">
+		{{ error }}
+	</base-dialog>
 	<section>
 		<mentor-filter @change-filter="setFilters"></mentor-filter>
 		<div>{{ activeFilters }}</div>
@@ -9,7 +9,9 @@
 	<section>
 		<base-card>
 			<div class="controls">
-				<base-button mode="outline" @click="loadMentors">Refresh</base-button>
+				<base-button mode="outline" @click="loadMentors(true)"
+					>Refresh</base-button
+				>
 				<base-button v-if="!isMentor && !isLoading" link to="/register"
 					>Register as a Mentor</base-button
 				>
@@ -38,18 +40,19 @@ import MentorItem from '../../components/mentors/MentorItem.vue';
 import MentorFilter from '../../components/mentors/MentorFilter.vue';
 import BaseSpinner from '../../components/ui/BaseSpinner.vue';
 import BaseDialog from '../../components/ui/BaseDialog.vue';
+import { mapGetters } from 'vuex';
 
 export default {
 	components: {
 		MentorItem,
 		MentorFilter,
-    BaseSpinner,
-    BaseDialog,
+		BaseSpinner,
+		BaseDialog,
 	},
 	data() {
 		return {
 			isLoading: false,
-      error: null,
+			error: null,
 			activeFilters: {
 				frontend: true,
 				backend: true,
@@ -76,26 +79,32 @@ export default {
 		hasMentors() {
 			return this.$store.getters['mentors/hasMentors'];
 		},
+		...mapGetters({
+			lastFetch: 'mentors/lastFetch',
+		}),
 	},
 	async created() {
+		console.log('created');
 		this.loadMentors();
 	},
 	methods: {
 		setFilters(updatedFilter) {
 			return (this.activeFilters = updatedFilter);
 		},
-		async loadMentors() {
-      this.isLoading = true;
-      try {
-        await this.$store.dispatch('mentors/loadMentors');
-      } catch (error) {
-        this.error = error.message || 'Failed to fetch mentor list!';
-      }
-			setTimeout(() => (this.isLoading = false), 1000);
-    },
-    handleError() {
-      this.error = null;
-    },
+		async loadMentors(refresh = false) {
+			this.isLoading = true;
+			try {
+				await this.$store.dispatch('mentors/loadMentors', {
+					forceRefresh: refresh,
+				});
+			} catch (error) {
+				this.error = error.message || 'Failed to fetch mentor list!';
+			}
+			this.isLoading = false;
+		},
+		handleError() {
+			this.error = null;
+		},
 	},
 };
 </script>
