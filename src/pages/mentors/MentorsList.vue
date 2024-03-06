@@ -1,38 +1,39 @@
 <template>
-	<base-dialog :show="!!error" title="An error occured" @close="handleError">
-		{{ error }}
-	</base-dialog>
-	<section>
-		<mentor-filter @change-filter="setFilters"></mentor-filter>
-		<div>{{ activeFilters }}</div>
-	</section>
-	<section>
-		<base-card>
-			<div class="controls">
-				<base-button mode="outline" @click="loadMentors(true)"
-					>Refresh</base-button
-				>
-				<base-button v-if="!isMentor && !isLoading" link to="/register"
-					>Register as a Mentor</base-button
-				>
-			</div>
-			<base-spinner v-if="isLoading"></base-spinner>
-			<ul v-else-if="loadMentors">
-				<mentor-item
-					v-for="mentor in filteredMentors"
-					:key="mentor.id"
-					:id="mentor.id"
-					:first-name="mentor.firstName"
-					:last-name="mentor.lastName"
-					:areas="mentor.areas"
-					:description="mentor.description"
-					:rate="mentor.hourlyRate"
-				>
-				</mentor-item>
-			</ul>
-			<h3 v-else>No mentors found: {error}</h3>
-		</base-card>
-	</section>
+	<div>
+		<base-dialog :show="!!error" title="An error occured" @close="handleError">
+			{{ error }}
+		</base-dialog>
+		<section>
+			<mentor-filter @change-filter="setFilters"></mentor-filter>
+		</section>
+		<section>
+			<base-card>
+				<div class="controls">
+					<base-button mode="outline" @click="loadMentors(true)"
+						>Refresh</base-button
+					>
+					<base-button v-if="!isMentor && !isLoading" link to="/register"
+						>Register as a Mentor</base-button
+					>
+				</div>
+				<base-spinner v-if="isLoading"></base-spinner>
+				<ul v-else-if="loadMentors">
+					<mentor-item
+						v-for="mentor in filteredMentors"
+						:key="mentor.id"
+						:id="mentor.id"
+						:first-name="mentor.firstName"
+						:last-name="mentor.lastName"
+						:areas="mentor.areas"
+						:description="mentor.description"
+						:rate="mentor.hourlyRate"
+					>
+					</mentor-item>
+				</ul>
+				<h3 v-else>No mentors found: {error}</h3>
+			</base-card>
+		</section>
+	</div>
 </template>
 
 <script>
