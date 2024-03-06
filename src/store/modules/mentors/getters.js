@@ -13,6 +13,11 @@ const mentorsGetters = {
   lastFetch(state) {
     return state.lastFetch;
   },
+  testGetter(state) {
+    const currentTimeStamp = new Date().getTime();
+    console.log(currentTimeStamp)
+    return state.someValue;
+  }
 };
 
 export default mentorsGetters;

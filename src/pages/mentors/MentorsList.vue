@@ -2,9 +2,11 @@
 	<base-dialog :show="!!error" title="An error occured" @close="handleError">
 		{{ error }}
 	</base-dialog>
+	<button type="button" @click="changeTest">Change To 5</button>
+  <button type="button" @click="testGetter">Get The Value</button>
+	<div>The Value Is: {{ test }}</div>
 	<section>
 		<mentor-filter @change-filter="setFilters"></mentor-filter>
-		<div>{{ activeFilters }}</div>
 	</section>
 	<section>
 		<base-card>
@@ -17,7 +19,7 @@
 				>
 			</div>
 			<base-spinner v-if="isLoading"></base-spinner>
-			<ul v-else-if="loadMentors">
+			<ul v-else-if="hasMentors">
 				<mentor-item
 					v-for="mentor in filteredMentors"
 					:key="mentor.id"
@@ -51,6 +53,7 @@ export default {
 	},
 	data() {
 		return {
+			test: 0,
 			isLoading: false,
 			error: null,
 			activeFilters: {
@@ -84,10 +87,16 @@ export default {
 		}),
 	},
 	async created() {
-		console.log('created');
 		this.loadMentors();
 	},
 	methods: {
+		testGetter() {
+			const test = this.$store.getters['mentors/testGetter'];
+			this.test = test;
+		},
+		async changeTest() {
+			await this.$store.dispatch('mentors/changeTest', 5);
+		},
 		setFilters(updatedFilter) {
 			return (this.activeFilters = updatedFilter);
 		},

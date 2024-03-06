@@ -7,6 +7,7 @@ const mentorsModule = {
 	state() {
     return {
       lastFetch: null,
+      someValue: 1,
 			mentors: [
 				{
 					id: 'm1',

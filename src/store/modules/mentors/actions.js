@@ -73,7 +73,11 @@ const mentorsActions = {
 		context.commit('setFetchTimeStamp');
 
 		return;
-	},
+  },
+  async changeTest(context, payload) {
+    const mutation = await context.commit('changeTest', payload)
+    return mutation;
+  },
 };
 
 export default mentorsActions;
