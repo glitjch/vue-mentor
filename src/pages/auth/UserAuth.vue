@@ -14,9 +14,9 @@
 				characters long.
 			</p>
 			<base-button>{{ submitButtonCaption }}</base-button>
-			<base-button type="button" mode="flat" @click="switchAuthMode"
-				>{{ switchModeButtonCaption }}</base-button
-			>
+			<base-button type="button" mode="flat" @click="switchAuthMode">{{
+				switchModeButtonCaption
+			}}</base-button>
 		</form>
 	</base-card>
 </template>
@@ -46,9 +46,15 @@ export default {
 				this.email === '' ||
 				!this.email.includes('@') ||
 				this.password.length < 6
-			)
+			) {
 				this.formIsValid = false;
-			return;
+				return;
+      }
+      if (this.mode === 'signup')
+        this.$store.dispatch('signup', {
+          email: this.email,
+          password: this.password,
+        })
 		},
 		switchAuthMode() {
 			this.mode === 'login' ? (this.mode = 'signup') : (this.mode = 'login');
