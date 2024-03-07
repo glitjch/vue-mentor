@@ -28,7 +28,9 @@ export default {
 			email: '',
 			password: '',
 			formIsValid: true,
-			mode: 'login',
+      mode: 'login',
+      isLoading: false,
+      error: null,
 		};
 	},
 	computed: {
