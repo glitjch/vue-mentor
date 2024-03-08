@@ -24,7 +24,7 @@ export default {
     
     const returningUser = {
 			email: responseData.email,
-			userId: responseData.idToken,
+			userId: responseData.localId,
 			tokenExpiration: responseData.expiresIn,
 		};
 

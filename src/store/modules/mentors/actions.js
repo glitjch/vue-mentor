@@ -36,8 +36,6 @@ const mentorsActions = {
 		const currentTimeStamp = new Date().getTime();
 		const lastFetch = context.getters.lastFetch;
 		const shouldUpdate = (currentTimeStamp - lastFetch) / 1000 > 60;
-		// console.log('lastFetch', lastFetch)
-		// console.log('shouldUpdate', shouldUpdate)
 		if (!payload.forceRefresh && lastFetch && !shouldUpdate) {
 			return;
 		}

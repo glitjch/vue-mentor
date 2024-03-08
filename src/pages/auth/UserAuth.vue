@@ -29,6 +29,7 @@
 					switchModeButtonCaption
 				}}</base-button>
 			</form>
+      {{ user }}
 		</base-card>
 	</div>
 </template>
@@ -42,7 +43,8 @@ export default {
 			formIsValid: true,
 			mode: 'login',
 			isLoading: false,
-			error: null,
+      error: null,
+      user: null,
 		};
 	},
 	computed: {
@@ -51,7 +53,7 @@ export default {
 		},
 		switchModeButtonCaption() {
 			return this.mode === 'login' ? 'sign up instead' : 'log in instead';
-		},
+    },
 	},
 	methods: {
 		async submitForm() {
@@ -74,6 +76,19 @@ export default {
 					});
 			} catch (error) {
 				this.error = error.message || 'Failed to authenticate.';
+			}
+
+			try {
+				if (this.mode === 'login')
+					await this.$store.dispatch('login', {
+						email: this.email,
+						password: this.password,
+          });
+        const loggedInUser = await this.$store.getters['userId']
+        this.user = loggedInUser;
+          
+			} catch (error) {
+				this.error = error.message || 'Failed to log in.';
 			}
 
 			this.isLoading = false;
