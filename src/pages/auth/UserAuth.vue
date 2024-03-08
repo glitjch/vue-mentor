@@ -8,8 +8,8 @@
 			<p>{{ error }}</p>
 		</base-dialog>
 		<base-dialog :show="isLoading" title="Authenticating..." fixed>
-    <base-spinner></base-spinner>
-  </base-dialog>
+			<base-spinner></base-spinner>
+		</base-dialog>
 		<base-card>
 			<form @submit.prevent="submitForm">
 				<div class="form-control">
@@ -29,7 +29,7 @@
 					switchModeButtonCaption
 				}}</base-button>
 			</form>
-      {{ user }}
+			{{ user }}
 		</base-card>
 	</div>
 </template>
@@ -43,8 +43,8 @@ export default {
 			formIsValid: true,
 			mode: 'login',
 			isLoading: false,
-      error: null,
-      user: null,
+			error: null,
+			user: null,
 		};
 	},
 	computed: {
@@ -53,7 +53,7 @@ export default {
 		},
 		switchModeButtonCaption() {
 			return this.mode === 'login' ? 'sign up instead' : 'log in instead';
-    },
+		},
 	},
 	methods: {
 		async submitForm() {
@@ -68,28 +68,26 @@ export default {
 			}
 			this.isLoading = true;
 
+			const payload = {
+				email: this.email,
+				password: this.password,
+			};
+
 			try {
 				if (this.mode === 'signup')
-					await this.$store.dispatch('signup', {
-						email: this.email,
-						password: this.password,
-					});
+					await this.$store.dispatch('signup', payload);
 			} catch (error) {
 				this.error = error.message || 'Failed to authenticate.';
 			}
 
 			try {
-				if (this.mode === 'login')
-					await this.$store.dispatch('login', {
-						email: this.email,
-						password: this.password,
-          });
-        const loggedInUser = await this.$store.getters['userId']
-        this.user = loggedInUser;
-          
+				if (this.mode === 'login') await this.$store.dispatch('login', payload);
 			} catch (error) {
 				this.error = error.message || 'Failed to log in.';
 			}
+
+			const loggedInUser = await this.$store.getters['userId'];
+			this.user = loggedInUser;
 
 			this.isLoading = false;
 		},
