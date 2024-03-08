@@ -12,24 +12,23 @@ export default {
 					returnSecureToken: true,
 				}),
 			}
-    );
-    const responseData = await response.json();
+		);
+		const responseData = await response.json();
 
 		if (!response.ok) {
-			const error = new Error(
-				responseData.error.message || 'Failed to log in'
-			);
+			const error = new Error(responseData.error.message || 'Failed to log in');
 			throw error;
-    }
-    
-    const returningUser = {
+		}
+
+		const returningUser = {
 			email: responseData.email,
 			userId: responseData.localId,
-			tokenExpiration: responseData.expiresIn,
+      tokenExpiration: responseData.expiresIn,
+      token: responseData.idToken,
 		};
 
-    context.commit('setUser', returningUser);
-    
+		context.commit('setUser', returningUser);
+
 		return;
 	},
 	async signup(context, payload) {
@@ -64,5 +63,13 @@ export default {
 
 		context.commit('setUser', newUser);
 		return;
-  },
+	},
+	logOut(context) {
+		const payload = {
+			token: null,
+			userId: null,
+			tokenExpiration: null,
+		};
+		context.commit('logOut', payload);
+	},
 };
