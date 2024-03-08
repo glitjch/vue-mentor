@@ -7,7 +7,9 @@
 		>
 			<p>{{ error }}</p>
 		</base-dialog>
-		<base-dialog :show="isLoading" title="Authenticating..." fixed></base-dialog>
+		<base-dialog :show="isLoading" title="Authenticating..." fixed>
+    <base-spinner></base-spinner>
+  </base-dialog>
 		<base-card>
 			<form @submit.prevent="submitForm">
 				<div class="form-control">
