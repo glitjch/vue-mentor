@@ -74,9 +74,6 @@
 			</div>
 			<p v-if="!areas.isValid">Please select at least one area.</p>
 		</div>
-		<p>
-			{{ this.areas }}
-		</p>
 		<p v-if="!formIsValid">
 			Please fix the errors above and try submitting again
 		</p>

@@ -20,10 +20,6 @@ export default {
 		},
 	},
 };
-
-// Add actions
-// add submit button
-// make sure to redirect to home page (list of mentors)
 </script>
 
 <style scoped>
