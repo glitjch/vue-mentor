@@ -28,9 +28,9 @@ export default {
 			email: '',
 			password: '',
 			formIsValid: true,
-      mode: 'login',
-      isLoading: false,
-      error: null,
+			mode: 'login',
+			isLoading: false,
+			error: null,
 		};
 	},
 	computed: {
@@ -42,7 +42,7 @@ export default {
 		},
 	},
 	methods: {
-		submitForm() {
+		async submitForm() {
 			this.formIsValid = true;
 			if (
 				this.email === '' ||
@@ -51,12 +51,20 @@ export default {
 			) {
 				this.formIsValid = false;
 				return;
-      }
-      if (this.mode === 'signup')
-        this.$store.dispatch('signup', {
-          email: this.email,
-          password: this.password,
-        })
+			}
+			this.isLoading = true;
+
+			try {
+				if (this.mode === 'signup')
+					this.$store.dispatch('signup', {
+						email: this.email,
+						password: this.password,
+					});
+			} catch (error) {
+				this.error = error.message || 'Failed to authenticate.';
+			}
+
+			this.isLoading = false;
 		},
 		switchAuthMode() {
 			this.mode === 'login' ? (this.mode = 'signup') : (this.mode = 'login');
