@@ -18,8 +18,7 @@ export default {
 		);
 
     const responseData = await response.json()
-    console.log(responseData.message)
-    console.log(responseData)
+
     if (!response.ok) {
 			const error = new Error(responseData.error.message || 'Failed to sign up');
 			throw error;
