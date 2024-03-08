@@ -17,12 +17,15 @@ export default {
 			}
 		);
 
-    
     const responseData = await response.json()
-		if (!response.ok) {
-			const error = new Error(responseData.message || 'Failed to sign up');
+    console.log(responseData.message)
+    console.log(responseData)
+    if (!response.ok) {
+			const error = new Error(responseData.error.message || 'Failed to sign up');
 			throw error;
     }
+
+ 
     const newUser = {
       email: responseData.email,
       userId: responseData.idToken,

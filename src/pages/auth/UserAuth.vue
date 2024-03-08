@@ -1,6 +1,13 @@
 <template>
 	<div>
-    <base-dialog fixed></base-dialog>
+		<base-dialog
+			title="An error has occured"
+			:show="!!error"
+			@close="handleError"
+		>
+			<p>{{ error }}</p>
+		</base-dialog>
+		<base-dialog :show="isLoading" title="Authenticating..." fixed></base-dialog>
 		<base-card>
 			<form @submit.prevent="submitForm">
 				<div class="form-control">
@@ -59,7 +66,7 @@ export default {
 
 			try {
 				if (this.mode === 'signup')
-					this.$store.dispatch('signup', {
+					await this.$store.dispatch('signup', {
 						email: this.email,
 						password: this.password,
 					});
@@ -71,6 +78,9 @@ export default {
 		},
 		switchAuthMode() {
 			this.mode === 'login' ? (this.mode = 'signup') : (this.mode = 'login');
+		},
+		handleError() {
+			this.error = null;
 		},
 	},
 };
