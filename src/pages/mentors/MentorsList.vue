@@ -12,6 +12,7 @@
 					<base-button mode="outline" @click="loadMentors(true)"
 						>Refresh</base-button
 					>
+          <base-button link to="/auth" v-if="!isLoggedIn">Log In</base-button>
 					<base-button v-if="!isMentor && !isLoading && isLoggedIn" link to="/register"
 						>Register as a Mentor</base-button
 					>
