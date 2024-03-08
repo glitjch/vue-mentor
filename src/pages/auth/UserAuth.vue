@@ -89,7 +89,8 @@ export default {
 			const loggedInUser = await this.$store.getters['userId'];
 			this.user = loggedInUser;
 
-			this.isLoading = false;
+      this.isLoading = false;
+      this.$router.replace('/mentors')
 		},
 		switchAuthMode() {
 			this.mode === 'login' ? (this.mode = 'signup') : (this.mode = 'login');
@@ -100,6 +101,7 @@ export default {
 	},
 };
 </script>
+
 <style scoped>
 form {
 	margin: 1rem;

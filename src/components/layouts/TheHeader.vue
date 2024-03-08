@@ -9,7 +9,7 @@
 				</li>
 				<li v-else><router-link to="/auth">Log In</router-link></li>
 				<li v-if="isLoggedIn">
-					<base-button @click="logOut">Log out</base-button>
+					<base-button type="button" @click="logOut">Log out</base-button>
 				</li>
 			</ul>
 		</nav>
@@ -24,8 +24,8 @@ export default {
 		},
 	},
 	methods: {
-		logOut() {
-			this.$store.dipatch('logOut');
+		async logOut() {
+			await this.$store.dispatch('logOut');
 		},
 	},
 };

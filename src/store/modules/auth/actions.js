@@ -64,7 +64,7 @@ export default {
 		context.commit('setUser', newUser);
 		return;
 	},
-	logOut(context) {
+  async logOut(context) {
 		const payload = {
 			token: null,
 			userId: null,

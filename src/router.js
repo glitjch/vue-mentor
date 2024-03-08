@@ -12,6 +12,7 @@ const router = createRouter({
 	history: createWebHistory(),
 	routes: [
 		{ path: '/', redirect: '/mentors' },
+		{ path: '/home', redirect: '/mentors' },
 		{ path: '/mentors', component: MentorsList },
 		{
 			path: '/mentors/:id',
