@@ -22,6 +22,14 @@ export default {
 			throw error;
     }
     
+    const returningUser = {
+			email: responseData.email,
+			userId: responseData.idToken,
+			tokenExpiration: responseData.expiresIn,
+		};
+
+    context.commit('setUser', returningUser);
+    
 		return;
 	},
 	async signup(context, payload) {
