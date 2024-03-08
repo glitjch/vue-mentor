@@ -89,8 +89,9 @@ export default {
 			const loggedInUser = await this.$store.getters['userId'];
 			this.user = loggedInUser;
 
-      this.isLoading = false;
-      this.$router.replace('/mentors')
+			this.isLoading = false;
+			const redirectUrl = '/' + (this.$route.query.redirect || 'mentors');
+			this.$router.replace(redirectUrl);
 		},
 		switchAuthMode() {
 			this.mode === 'login' ? (this.mode = 'signup') : (this.mode = 'login');
