@@ -37,7 +37,11 @@ const router = createRouter({
 			component: RequestsReceived,
 			meta: { requiresAuth: true },
 		},
-		{ path: '/auth', component: UserAuth, meta: { requiresUnauth: true } },
+		{
+			path: '/auth',
+			component: UserAuth,
+			meta: { requiresUnauth: true },
+		},
 		{ path: '/:notFound(.*)', component: NotFound },
 	],
 });
