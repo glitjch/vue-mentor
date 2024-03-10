@@ -28,7 +28,7 @@ const router = createRouter({
 		},
 		{ path: '/register', component: MentorRegistation, meta: { requiresAuth: true } },
 		{ path: '/requests', component: RequestsReceived, meta: { requiresAuth: true } },
-		{ path: '/auth', component: UserAuth },
+		{ path: '/auth', component: UserAuth, meta: { requiresUnauth: true } },
 		{ path: '/:notFound(.*)', component: NotFound },
 	],
 });
