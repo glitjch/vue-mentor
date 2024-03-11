@@ -1,75 +1,22 @@
 export default {
 	async login(context, payload) {
-		const { email, password } = payload;
-		const key = process.env.VUE_APP_FIREBASE_API;
-		const response = await fetch(
-			`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${key}`,
-			{
-				method: 'POST',
-				body: JSON.stringify({
-					email,
-					password,
-					returnSecureToken: true,
-				}),
-			}
-		);
-		const responseData = await response.json();
-
-		if (!response.ok) {
-			const error = new Error(responseData.error.message || 'Failed to log in');
-			throw error;
-		}
-
-		const returningUser = {
-			email: responseData.email,
-			userId: responseData.localId,
-			tokenExpiration: responseData.expiresIn,
-			token: responseData.idToken,
-		};
-
-		context.commit('setUser', returningUser);
-
-		return;
+		context.dispatch('auth', {
+			...payload,
+			mode: 'login',
+		});
 	},
 	async signup(context, payload) {
-		const { email, password } = payload;
-		const key = process.env.VUE_APP_FIREBASE_API;
-		const response = await fetch(
-			`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${key}`,
-			{
-				method: 'POST',
-				body: JSON.stringify({
-					email,
-					password,
-					returnSecureToken: true,
-				}),
-			}
-		);
-
-		const responseData = await response.json();
-
-		if (!response.ok) {
-			const error = new Error(
-				responseData.error.message || 'Failed to sign up'
-			);
-			throw error;
-		}
-
-		const newUser = {
-			email: responseData.email,
-			userId: responseData.idToken,
-			tokenExpiration: responseData.expiresIn,
-		};
-
-		context.commit('setUser', newUser);
-		return;
+    context.dispatch('auth', {
+			...payload,
+			mode: 'signup',
+		});
 	},
 	async auth(context, payload) {
 		const mode = payload.mode;
-    let url =
-      mode === 'signup'
-        ? `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${key}`
-        : `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${key}`;
+		let url =
+			mode === 'signup'
+				? `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${key}`
+				: `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${key}`;
 		const { email, password } = payload;
 		const key = process.env.VUE_APP_FIREBASE_API;
 		const response = await fetch(url, {
@@ -82,8 +29,9 @@ export default {
 		});
 		const responseData = await response.json();
 
-		if (!response.ok) {
-			const error = new Error(responseData.error.message || 'Failed to log in');
+    if (!response.ok) {
+      const defaultErrorMessage = mode === 'signup' ? 'Failed to sign up' : 'Failed to log in';
+			const error = new Error(responseData.error.message || defaultErrorMessage);
 			throw error;
 		}
 
