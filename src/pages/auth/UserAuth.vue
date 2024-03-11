@@ -74,24 +74,21 @@ export default {
 			};
 
 			try {
-				if (this.mode === 'signup')
+				if (this.mode === 'signup') {
 					await this.$store.dispatch('signup', payload);
+				} else {
+					await this.$store.dispatch('login', payload);
+				}
+				const redirectUrl = '/' + (this.$route.query.redirect || 'mentors');
+				this.$router.replace(redirectUrl);
 			} catch (error) {
 				this.error = error.message || 'Failed to authenticate.';
-			}
-
-			try {
-				if (this.mode === 'login') await this.$store.dispatch('login', payload);
-			} catch (error) {
-				this.error = error.message || 'Failed to log in.';
 			}
 
 			const loggedInUser = await this.$store.getters['userId'];
 			this.user = loggedInUser;
 
 			this.isLoading = false;
-			const redirectUrl = '/' + (this.$route.query.redirect || 'mentors');
-			this.$router.replace(redirectUrl);
 		},
 		switchAuthMode() {
 			this.mode === 'login' ? (this.mode = 'signup') : (this.mode = 'login');

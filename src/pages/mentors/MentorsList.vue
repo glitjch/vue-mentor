@@ -89,7 +89,6 @@ export default {
 		}),
 	},
 	async created() {
-		console.log('created');
 		this.loadMentors();
 	},
 	methods: {
