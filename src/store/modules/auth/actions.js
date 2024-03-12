@@ -50,7 +50,16 @@ export default {
 		};
 
 		context.commit('setUser', returningUser);
-	},
+  },
+  tryLogin(context) {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    if (token && userId) context.commit('setUser', {
+      userId,
+      token,
+      tokenExpiration: null,
+    })
+  },
 	async logOut(context) {
 		const payload = {
 			token: null,
