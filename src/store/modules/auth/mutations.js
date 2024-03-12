@@ -4,7 +4,7 @@ export default {
 		state.userId = payload.userId;
 		state.email = payload.email;
 	},
-	logOut(state) {
+	logout(state) {
 		state.token = null;
 		state.userId = null;
 		state.email = null;
