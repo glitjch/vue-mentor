@@ -1,3 +1,5 @@
+let timer;
+
 export default {
 	async login(context, payload) {
 		return context.dispatch('auth', {
@@ -6,7 +8,7 @@ export default {
 		});
 	},
 	async signup(context, payload) {
-    return context.dispatch('auth', {
+		return context.dispatch('auth', {
 			...payload,
 			mode: 'signup',
 		});
@@ -39,13 +41,16 @@ export default {
 			throw error;
 		}
 
-    const expirationIn = +responseData.expiresIn * 1000;
-    const expirationDate = new Date().getTime() + expirationIn;
+		const expiresIn = +responseData.expiresIn * 1000;
+		const expirationDate = new Date().getTime() + expiresIn;
 
-    localStorage.setItem('token', responseData.idToken);
-    localStorage.setItem('userId', responseData.localId);
-    localStorage.setItem('expirationDate', expirationDate);
+		localStorage.setItem('token', responseData.idToken);
+		localStorage.setItem('userId', responseData.localId);
+		localStorage.setItem('tokenExpiration', expirationDate);
 
+		timer = setTimeout(() => {
+			context.dispatch('logout'), expiresIn;
+		});
 
 		const returningUser = {
 			email: responseData.email,
@@ -54,23 +59,37 @@ export default {
 		};
 
 		context.commit('setUser', returningUser);
-  },
-  tryLogin(context) {
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
-    if (token && userId) context.commit('setUser', {
-      userId,
-      token,
-      tokenExpiration: null,
-    })
-  },
-  async logOut(context) {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId');
+	},
+	tryLogin(context) {
+		const token = localStorage.getItem('token');
+		const userId = localStorage.getItem('userId');
+		const tokenExpiration = localStorage.getItem('tokenExpiration');
+
+		const expiresIn = +tokenExpiration - new Date().getTime();
+
+		if (expiresIn < 10000) return;
+
+		timer = setTimeout(() => {
+			context.dispatch('logout');
+		}, expiresIn);
+
+		if (token && userId)
+			context.commit('setUser', {
+				userId,
+				token,
+				tokenExpiration: null,
+			});
+	},
+	async logOut(context) {
+		localStorage.removeItem('token');
+		localStorage.removeItem('userId');
+		localStorage.removeItem('tokenExpiration');
+
+		clearTimeout(timer);
 		const payload = {
 			token: null,
 			userId: null,
 		};
-    await context.commit('logOut', payload);
+		await context.commit('logOut', payload);
 	},
 };
