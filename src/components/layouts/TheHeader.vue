@@ -25,7 +25,8 @@ export default {
 	},
 	methods: {
 		async logOut() {
-			await this.$store.dispatch('logOut');
+      await this.$store.dispatch('logOut');
+      this.$router.replace('./mentors');
 		},
 	},
 };

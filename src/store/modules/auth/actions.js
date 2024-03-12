@@ -66,6 +66,6 @@ export default {
 			userId: null,
 			tokenExpiration: null,
 		};
-		context.commit('logOut', payload);
+    await context.commit('logOut', payload);
 	},
 };

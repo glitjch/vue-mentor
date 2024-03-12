@@ -7,7 +7,6 @@ const requestsActions = {
 			message: payload.message,
 			date: payload.date,
 		};
-		console.log('mentorId', payload.mentorId);
 
 		const response = await fetch(
 			`https://vue-http-demo-40cf5-default-rtdb.firebaseio.com/requests/${payload.mentorId}.json`,
@@ -32,8 +31,10 @@ const requestsActions = {
 	},
 	async loadRequests(context) {
 		const userId = context.rootGetters.userId;
+    const token = context.rootGetters.token;
+
 		const response = await fetch(
-			`https://vue-http-demo-40cf5-default-rtdb.firebaseio.com/requests/${userId}.json`
+			`https://vue-http-demo-40cf5-default-rtdb.firebaseio.com/requests/${userId}.json?auth=${token}`
     );
     
     const responseData = await response.json();
