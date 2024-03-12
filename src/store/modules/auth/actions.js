@@ -39,13 +39,17 @@ export default {
 			throw error;
 		}
 
+    const expirationIn = +responseData.expiresIn * 1000;
+    const expirationDate = new Date().getTime() + expirationIn;
+
     localStorage.setItem('token', responseData.idToken);
     localStorage.setItem('userId', responseData.localId);
+    localStorage.setItem('expirationDate', expirationDate);
+
 
 		const returningUser = {
 			email: responseData.email,
 			userId: responseData.localId,
-			tokenExpiration: responseData.expiresIn,
 			token: responseData.idToken,
 		};
 
@@ -60,11 +64,12 @@ export default {
       tokenExpiration: null,
     })
   },
-	async logOut(context) {
+  async logOut(context) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
 		const payload = {
 			token: null,
 			userId: null,
-			tokenExpiration: null,
 		};
     await context.commit('logOut', payload);
 	},
