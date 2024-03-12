@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<base-dialog :show="!!error" title="An error occured" @close="handleError">
+			<p>{{ error }}</p>
 		</base-dialog>
 		<section>
 			<base-card>
