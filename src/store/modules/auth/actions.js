@@ -39,6 +39,9 @@ export default {
 			throw error;
 		}
 
+    localStorage.setItem('token', responseData.idToken);
+    localStorage.setItem('userId', responseData.localId);
+
 		const returningUser = {
 			email: responseData.email,
 			userId: responseData.localId,
