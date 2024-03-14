@@ -7,7 +7,6 @@ const mentorMutations = {
 	},
   setFetchTimeStamp(state) {
 		state.lastFetch = new Date().getTime();
-    // console.log('setFetchTimeStamp', state.lastFetch)
 	},
 };
 
